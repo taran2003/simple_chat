@@ -1,0 +1,58 @@
+@import url('https://fonts.googleapis.com/css2?family=Abel&display=swap');
+
+:root {
+    --auth-item-height: 26px;
+}
+
+.auth {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    position: absolute;
+    width: 30vw;
+    max-width: 240px;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    gap: 16px;
+}
+
+.auth-input-box {
+    max-width: inherit;
+    width: inherit;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.auth-input-label {
+    color: whitesmoke;
+    font-family: 'Abel', 'Arial Narrow';
+    font-size: large;
+}
+
+.auth-input {
+    max-width: inherit;
+    width: inherit;
+    box-sizing: border-box;
+    height: var(--auth-item-height);
+    background-color: inherit;
+    border: 1px solid gray;
+    outline: none;
+    border-radius: 10px;
+    text-indent: 8px;
+    color: whitesmoke;
+}
+
+.auth-submit {
+    max-width: inherit;
+    width: inherit;
+    height: var(--auth-item-height);
+    border-radius: 10px;
+    border-width: 0px;
+    font-family: 'Abel', 'Arial Narrow';
+    font-size: large;
+    background-color: #556675;
+    color: whitesmoke;
+}
