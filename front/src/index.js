@@ -1,8 +1,8 @@
-import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Login from './routes/login/page';
+import {LoginPage} from './routes/login/page';
 import { RegistrationPage } from './routes/registration/page';
+import React from 'react';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
@@ -12,7 +12,7 @@ root.render(
     <React.StrictMode>
             <BrowserRouter>
                 <Routes>
-                    <Route path="/login" element={<Login />} />
+                    <Route path="/login" element={<LoginPage />} />
                     <Route path="/register" element={<RegistrationPage />} />
                     {/* <Route path="/register" element={<Register />} />
                     <Route path="/chat" element={<Logout />} /> */}

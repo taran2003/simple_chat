@@ -1,41 +1,25 @@
-import { formToJSON } from "axios";
-import { useState } from "react";
-// import useAuthContext from '../Providers/useAuthContext';
-// import NavigationComponent from "../Components/NavigationComponent";
-// import { login, getUserFromStorage} from "../Helper/ServerRequest";
-// import { useNavigate } from "react-router-dom";
+import AuthForm from '../../components/AuthForm';
+import { AuthFormInput } from '../../components/AuthForm/input';
+import { useState } from 'react';
+import { loginReq } from '../../serverRequest';
 
-function Login() {
-    // const navigate = useNavigate();
-    // const { setIsLoggedIn, setUser} = useAuthContext();
+export function LoginPage() {
 
-    let [form, setForm] = useState({
-        login: '', password: '',
+    const [value, setValue] = useState({
+        login:'',
+        password:''
     });
 
-    const handleState = (e) => {
-        setForm({ ...form, [e.target.name]: e.target.value });
+    const confirm = async () =>{
+        await loginReq({ login: value.login, password: value.password });
     }
 
-    function onSubmit() {
-        // await login({ login: form.login, password: form.password });
-        // const { firstName, lastName } = getUserFromStorage();
-        // setIsLoggedIn(true);
-        // navigate("/main");
-        console.log(form);
-        return false;
+    const handelState = (e) => {
+        setValue({...value,[e.target.name]:e.target.value});
     }
 
-    return (<div>
-        {/* <NavigationComponent>register</NavigationComponent> */}
-        <div className="App">
-            <form onSubmit={onSubmit}>
-                <input type="text" onChange={handleState} placeholder={"Login"}></input>
-                <input type="password" onChange={handleState} placeholder={"password"}></input>
-                <input type="submit"></input>
-            </form>
-        </div>
-    </div>);
+    return <AuthForm submitText="Login" onSubmit={confirm}>
+        <AuthFormInput name="login" type="text" onChange={handelState} value={value.Login}/>
+        <AuthFormInput name="password" type="password" onChange={handelState} value={value.Password}/>
+    </AuthForm>
 }
-
-export default Login;

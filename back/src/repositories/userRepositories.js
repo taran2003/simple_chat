@@ -4,7 +4,7 @@ const prisma = new PrismaClient();
 
 const getByLogin = async ({ login }) => {
     try {
-        const user = await prisma.users.findUnique({
+        const user = await prisma.user.findUnique({
             where: {
                 login
             }
@@ -16,7 +16,7 @@ const getByLogin = async ({ login }) => {
 }
 
 const getById = async ({ id }) => {
-    const user = await prisma.users.findUnique({
+    const user = await prisma.user.findUnique({
         where: {
             id: id
         }
@@ -39,7 +39,7 @@ const write = async ({ login, password, email }) => {
 
 const deleteUser = async (login) => {
     try {
-        const deleteUser = await prisma.users.delete({
+        const deleteUser = await prisma.user.delete({
             where: {
                 login
             },
@@ -51,7 +51,7 @@ const deleteUser = async (login) => {
 
 const update = async ({ user, updatedUser }) => {
     try {
-        const updateUser = await prisma.users.update({
+        const updateUser = await prisma.user.update({
             where: {
                 login: user.login
             },
