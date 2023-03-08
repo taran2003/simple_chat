@@ -12,7 +12,7 @@ const verifyToken = (token, salt) => {
     try {
         return jwt.verify(token, salt);
     } catch (e) {
-        throw (e);
+        throw e;
     }
 };
 

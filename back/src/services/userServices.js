@@ -1,6 +1,6 @@
 const {createToken, verifyToken} = require("../helper/jwt");
 // const {AccessError} = require("../errors/authErrors");
-const userRepositories = require('../repositories/userRepositories');
+const userRepositories = require('../repositories/userRepository');
 const argon2 = require("argon2");
 
 const accessTokenKey = process.env.JWT_ACCESS_KEY;

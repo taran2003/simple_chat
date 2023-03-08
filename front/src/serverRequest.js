@@ -1,103 +1,53 @@
-import axios from 'axios';
+import { getTokens, setLogin, setTokens } from './localStorage';
 
-export const axiosInstance = axios.create({
-    withCredentials: true,
-});
+export const SERVER_URL = 'http://192.168.100.102:3001';
 
-export const getSessionFromStorage = () => {
-    return {
-        accessToken: localStorage.getItem('accessToken'),
-        refreshToken: localStorage.getItem('refreshToken')
-    }
-}
-
-export const getUserFromStorage = () => {
-    return {
-        login: localStorage.getItem('login')
-    }
-}
-
-function authHeaders() {
-    let { accessToken } = getSessionFromStorage();
-    return {
-        Authorization: `Bearer ${accessToken}`,
-    };
-};
-
-const Request = async ({
-    headers = {},
-    method = 'POST',
-    url,
-    data,
-    params,
-    isUpdatable = false
-}) => {
-
-    const options = {
-        headers,
-        method,
-        data,
-        params,
-        url,
-    };
-    
-    let { accessToken, refreshToken } = getSessionFromStorage();
-
-    if (accessToken) {
-        options.headers = {
-            ...options.headers,
-            ...authHeaders()
+function req(method, url, data) {
+    return new Promise((resolve, reject) => {
+        const xhr = new XMLHttpRequest();
+        xhr.addEventListener('load', function () {
+            if (this.status >= 200 && this.status < 300) {
+                if(this.responseText != '') {
+                    resolve(JSON.parse(this.responseText));
+                }
+                else {
+                    resolve(null);
+                }
+            }
+            else {
+                reject({
+                    status: this.status,
+                    statusText: this.statusText,
+                    responseText: this.responseText,
+                });
+            }
+        });
+        xhr.open(method, `${SERVER_URL}/api/${url}`);
+        xhr.setRequestHeader('Content-Type', 'application/json');
+        const { accessToken } = getTokens();
+        if (accessToken) {
+            xhr.setRequestHeader('Authorization', `Bearer ${accessToken}`);
         }
-    }
-    
-    try {
-        const result = await axiosInstance(options)
-        return result;
-    } catch (error) {
-        // if (isUpdatable) {
-        //     try {
-        //         await refreshTokens({ accessTok: accessToken, refreshTok: refreshToken })
-        //         options.headers = {
-        //             ...options.headers,
-        //             ...authHeaders()
-        //         }
-        //         const result = await axiosInstance(options);
-        //         return result;
-        //     }catch(error){
-        //         throw(error)
-        //     }
-        
-        // }
-        throw error;
-    }
+        xhr.send(!!data ? JSON.stringify(data) : null);
+    });
+}
+
+const login = ({ login, password }) => {
+    return req('POST', 'auth/login', {
+        login, password
+    });
 };
 
-export const loginReq = async ({ login, password }) => {
-    const { data } = await Request({
-        url: 'http://localhost:3001/api/auth/login',
-        data: {
-            login,
-            password,
-        },
+const register = ({ login, password, email}) => {
+    return req('POST', 'auth/register', {
+        login, password, email
     });
-    let { accessToken, refreshToken } = data;
-    localStorage.setItem('accessToken', (accessToken));
-    localStorage.setItem('refreshToken', (refreshToken));
-    localStorage.setItem('login', (data.user.login));
-    return data.user;
 };
 
-export const register = async ({ login, password, passwordConf, email}) => {
-    if (password !== passwordConf) {
-        return;
-    }
-    const { data } = await Request({
-        url: 'http://localhost:3001/api/auth/register',
-        data: {
-            login,
-            password,
-            email
-        },
-    });
-    return data;
-};
+const fetch = async () => {
+    return (await req('GET', 'chat/fetch')).messages;
+}
+
+export default {
+    login, register, fetch
+}

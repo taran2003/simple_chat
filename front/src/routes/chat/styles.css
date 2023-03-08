@@ -1,0 +1,81 @@
+.message-own {
+    border-radius: 10px;
+    border-width: 0px;
+    background-color: #252525;
+    font-size: 12;
+    text-align: right;
+    margin-right: 0px;
+    margin-left: auto;
+}
+
+.message-oth {
+    border-radius: 10px;
+    border-width: 0px;
+    background-color: #455565;
+    font-size: 12;
+    text-align: left;
+    margin-right: auto;
+    margin-left: 0px;
+}
+
+.message-input-box {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.message-send {
+    width: 10%;
+    position: relative;
+    right: 30px;
+    border-radius: 8px;
+    border-width: 0px;
+    height: 30px;
+    font-size: large;
+    width: 30px;
+    color: #AAAAAA;
+    background-color: #445566;
+}
+
+.message-send:hover {
+    background-color: #555F66;
+}
+
+.message-send:active {
+    background-color: #666677;
+}
+
+.message-send:focus {
+    outline-style: solid;
+    outline-width: 1px;
+    outline-color: #776666;
+}
+
+.message-input {
+    box-sizing: border-box;
+    background-color: #10202f;
+    border-width: 0;
+    border-radius: 8px;
+    height: 30px;
+    margin-left: 30px;
+    width: 90%;
+    max-width: 500px;
+    text-indent: 10px;
+    font-family: 'Segoe UI';
+    color: #FFFFFF
+}
+
+.message-input:hover {
+    background-color: #203036;
+}
+
+.message-input:active {
+    background-color: #887766;
+}
+
+.message-input:focus {
+    outline-width: 0px;
+    outline-style: solid;
+}

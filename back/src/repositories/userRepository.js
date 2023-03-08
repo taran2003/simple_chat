@@ -18,7 +18,7 @@ const getByLogin = async ({ login }) => {
 const getById = async ({ id }) => {
     const user = await prisma.user.findUnique({
         where: {
-            id: id
+            id
         }
     });
     return user;
@@ -31,7 +31,7 @@ const write = async ({ login, password, email }) => {
         email: email
     };
     try {
-        const createUser = await prisma.user.create({ data: user });
+        return await prisma.user.create({ data: user });
     } catch (e) {
         throw e;
     }

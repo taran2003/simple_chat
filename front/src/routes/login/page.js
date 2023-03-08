@@ -1,9 +1,12 @@
-import AuthForm from '../../components/AuthForm';
-import { AuthFormInput } from '../../components/AuthForm/input';
+import AuthForm from '../../components/Auth/Form';
+import { AuthFormInput } from '../../components/Auth/Form/input';
 import { useState } from 'react';
-import { loginReq } from '../../serverRequest';
+import req from '../../serverRequest';
+import { useNavigate } from 'react-router-dom';
+import { setLogin, setTokens } from '../../localStorage';
 
 export function LoginPage() {
+    const navigate = useNavigate();
 
     const [value, setValue] = useState({
         login:'',
@@ -11,15 +14,25 @@ export function LoginPage() {
     });
 
     const confirm = async () =>{
-        await loginReq({ login: value.login, password: value.password });
+        try {
+            const { user, ...toks } = await req.login({ ...value });
+            setLogin(user.login);
+            setTokens(toks);
+            navigate('/chat');
+            return;
+        }
+        catch(e) {
+            console.error(e);
+            alert(e);
+        }
     }
 
-    const handelState = (e) => {
+    const handleState = (e) => {
         setValue({...value,[e.target.name]:e.target.value});
     }
 
     return <AuthForm submitText="Login" onSubmit={confirm}>
-        <AuthFormInput name="login" type="text" onChange={handelState} value={value.Login}/>
-        <AuthFormInput name="password" type="password" onChange={handelState} value={value.Password}/>
+        <AuthFormInput label="Login" name="login" type="text" onChange={handleState} value={value.login}/>
+        <AuthFormInput label="Password" name="password" type="password" onChange={handleState} value={value.password}/>
     </AuthForm>
 }

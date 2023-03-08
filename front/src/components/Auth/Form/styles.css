@@ -10,7 +10,7 @@
     align-items: center;
     flex-direction: column;
     position: absolute;
-    width: 30vw;
+    width: 60vw;
     max-width: 240px;
     left: 50%;
     top: 50%;
@@ -45,6 +45,12 @@
     color: whitesmoke;
 }
 
+.auth-input:focus {
+    outline-style: solid;
+    outline-color: #887766;
+    outline-width: 1.4px;
+}
+
 .auth-submit {
     max-width: inherit;
     width: inherit;
@@ -55,4 +61,18 @@
     font-size: large;
     background-color: #556675;
     color: whitesmoke;
+}
+
+.auth-submit:hover {
+    background-color: #667780;
+}
+
+.auth-submit:active {
+    background-color: #887766;
+}
+
+.auth-submit:focus {
+    outline-style: solid;
+    outline-color: #887766;
+    outline-width: 1.7px;
 }

@@ -1,5 +1,5 @@
 const {createToken,verifyToken} = require("../helper/jwt");
-const userRepositories = require("../repositories/userRepositories");
+const userRepositories = require("../repositories/userRepository");
 const argon2 = require('argon2');
 // const error = require("../errors/authErrors")
 const {PrismaClientKnownRequestError} = require("@prisma/client/runtime");
@@ -11,8 +11,13 @@ const accessTokenTTL = process.env.JWT_TTL_ACCESS;
 const refreshTokenTTL = process.env.JWT_TTL_REFRESH;
 
 const parser = ({accessToken, refreshToken}) => {
-    const parsToken = verifyToken(accessToken, accessTokenKey);
-    return parsToken;
+    return verifyToken(accessToken, accessTokenKey);
+}
+
+const createTokens = (data) => {
+    const accessToken = createToken(data, accessTokenKey, {expiresIn: accessTokenTTL});
+    const refreshToken = createToken(data, refreshTokenKey, {expiresIn: refreshTokenTTL});
+    return ({accessToken, refreshToken});
 }
 
 const login = async ({login, password}) => {
@@ -24,7 +29,7 @@ const login = async ({login, password}) => {
         if (!await argon2.verify(user.password, password)) {
             throw new error.InvalidPasswordError()
         }
-        data = createTokens({id: user.id});
+        data = createTokens({id: user.id, login: user.login});
         data = {
             ...data,
             user
@@ -35,16 +40,11 @@ const login = async ({login, password}) => {
     }
 }
 
-const createTokens = ({id}) => {
-    const accessToken = createToken({id}, accessTokenKey, {expiresIn: accessTokenTTL});
-    const refreshToken = createToken({id}, refreshTokenKey, {expiresIn: refreshTokenTTL});
-    return ({accessToken, refreshToken});
-}
-
 const register = async ({login, password, email}) => {
     try {
         const hashPassword = await argon2.hash(password)
-        const result = await userRepositories.write({login, password:hashPassword, email});
+        const user = await userRepositories.write({ login, email, password: hashPassword });
+        return { user, ...createTokens(user) };
     } catch (e) {
         if (e instanceof PrismaClientKnownRequestError || e.code == "P2002") {
             throw new error.InvalidLoginError();
@@ -56,8 +56,8 @@ const register = async ({login, password, email}) => {
 
 const refreshToken = ({accessToken,refreshToken}) => {
     try {
-        const {id} = verifyToken(refreshToken,refreshTokenKey);
-        return createTokens({id});
+        const {id, login} = verifyToken(refreshToken,refreshTokenKey);
+        return createTokens({id, login});
     } catch (e){
         throw e;
     }

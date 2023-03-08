@@ -1,6 +1,6 @@
 const authServices = require("../services/authServices");
 const userServices = require('../services/userServices');
-const userRepositories = require('../repositories/userRepositories')
+const userRepositories = require('../repositories/userRepository')
 
 const login = async (req, res, next) => {
     const {login, password} = req.body;
@@ -15,12 +15,11 @@ const login = async (req, res, next) => {
 const register = async (req, res, next) => {
     const {login, password, email} = req.body;
     try {
-       await authServices.register({login, password, email})
+       const data = await authServices.register({login, password, email})
+       res.status(200).send(data);
     } catch (e) {
         next(e);
-        return;
     }
-    res.status(200).send();
 };
 
 const refresh = (req, res) => {
