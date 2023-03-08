@@ -9,6 +9,7 @@ export function MessageInput() {
 
     function send() {
         socket.send(messageText);
+        setMessageText('');
     }
 
     return (
