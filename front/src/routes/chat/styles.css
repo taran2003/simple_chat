@@ -24,6 +24,9 @@
     justify-content: center;
     align-items: center;
     margin-top: 20px;
+    position: absolute;
+    left: 0px;
+    bottom: 20px;
 }
 
 .message-send {

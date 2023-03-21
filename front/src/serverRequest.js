@@ -1,6 +1,6 @@
 import { getTokens, setLogin, setTokens } from './localStorage';
 
-export const SERVER_URL = 'http://192.168.100.102:3001';
+export const SERVER_URL = 'http://localhost:3001';
 
 function req(method, url, data) {
     return new Promise((resolve, reject) => {
@@ -24,15 +24,18 @@ function req(method, url, data) {
         });
         xhr.open(method, `${SERVER_URL}/api/${url}`);
         xhr.setRequestHeader('Content-Type', 'application/json');
-        const { accessToken } = getTokens();
-        if (accessToken) {
-            xhr.setRequestHeader('Authorization', `Bearer ${accessToken}`);
+        if(getTokens()){
+            const { accessToken } = getTokens();
+            if (accessToken) {
+                xhr.setRequestHeader('Authorization', `Bearer ${accessToken}`);
+            }
         }
         xhr.send(!!data ? JSON.stringify(data) : null);
     });
 }
 
 const login = ({ login, password }) => {
+    console.log('5');
     return req('POST', 'auth/login', {
         login, password
     });
