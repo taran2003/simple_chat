@@ -1,30 +1,15 @@
 import React, { createContext, useContext, useEffect, useMemo, useState } from 'react';
-import req, { SERVER_URL } from '../../serverRequest';
-import io from 'socket.io-client';
-import { getTokens } from '../../localStorage';
+import req from '../../serverRequest';
+import { initSocket } from './socket';
 
 const ChatContext = React.createContext({});
 
 export function ChatContextProvider({ children }) {
     const [messages, setMessages] = useState([]);
-    const socket = useMemo(() => {
-        const sock = io(SERVER_URL, {
-            auth: (cb) => {
-              cb({
-                token: getTokens().accessToken
-              });
-            }
-          });
-        sock.on('message', msg => {
-            setMessages(msgs => [...msgs, msg]);
-        });
-        sock.on('error', e => {
-            console.error('Message sending failed: ', e);
-        });
-        return sock;
-    }, []);
-
+    const socket = useMemo(() => initSocket(setMessages), []);
     const [fetched, setFetched] = useState(false);
+    const [selection, setSelection] = useState(null);
+
     useEffect(
         () => {
             (async() => {
@@ -37,7 +22,7 @@ export function ChatContextProvider({ children }) {
     );
     return (
         <ChatContext.Provider value={{
-            socket, messages, setMessages, fetched
+            socket, messages, setMessages, fetched, selection, setSelection
         }}>
             {children}
         </ChatContext.Provider>

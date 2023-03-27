@@ -17,7 +17,13 @@ export function MessageList() {
             lastDate = date;
             elems.push(<Clock key={`clock#${i}`} date={date}/>);
         }
-        elems.push(<Message key={`msg#${i}`} text={msg.text} own={msg.login == login} />);
+        const handleSelect = () => {
+            chat.setSelection({
+                id: chat.messages[i].id,
+                edited: false,
+            });
+        };
+        elems.push(<Message key={`msg#${i}`} text={msg.text} own={msg.login == login} onSelect={handleSelect} />);
     }
     return (
         <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
