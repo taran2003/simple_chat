@@ -35,7 +35,7 @@ function req(method, url, data) {
 }
 
 const login = ({ login, password }) => {
-    console.log('5');
+   
     return req('POST', 'auth/login', {
         login, password
     });

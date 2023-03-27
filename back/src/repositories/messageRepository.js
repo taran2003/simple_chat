@@ -1,5 +1,5 @@
 const messages = []
-const nextId = 0;
+let nextId = 0;
 
 function add(msg) {
     msg.id = nextId;

@@ -16,7 +16,7 @@ export function MessageInput() {
         return (
             <div className='message-input-box'>
                 <input className='message-input' value={messageText} onChange={(e) => setMessageText(e.target.value)} />
-                <button className='message-send' onClick={send}>🗨</button>
+                <button className='message-send' disabled={messageText.trim().length===0} onClick={send} >🗨</button>
             </div>
         );
     }
@@ -25,8 +25,9 @@ export function MessageInput() {
     if (selection.edited) {
         const text = messages[selectedIndex].text;
         const handleChange = e => setMessages(msgs => {
-            msgs[i].text = e.target.value;
-            return msgs;
+            const newMsgs = msgs.slice();
+            newMsgs[selectedIndex].text = e.target.value;
+            return newMsgs;
         });
         function finish() {
             setSelection(null);

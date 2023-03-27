@@ -3,11 +3,12 @@ const { verifyToken } = require('../helper/jwt');
 const userRepository = require('../repositories/userRepository');
 const messageRepository = require('../repositories/messageRepository');
 
-function checkSocketAuth(socket, cb) {
+async function checkSocketAuth(socket, cb) {
     const token = socket.handshake.auth.token;
     try {
         const {id, login} = verifyToken(token, process.env.JWT_ACCESS_KEY);
-        const user = userRepository.getById({ id });
+        const user = await userRepository.getById({ id });
+        
         if (!user) {
             throw 42;
         }
@@ -18,6 +19,7 @@ function checkSocketAuth(socket, cb) {
             socket.emit("error", "token-expired");
             return;
         }
+     
         socket.emit("error", "unauthenticated");
     }
 }
@@ -35,7 +37,7 @@ function initialize(io) {
         });
         socket.on('replace', ({ id, text })  => {
             checkSocketAuth(socket, ({ login: usrLogin }) => {
-                if(!check(id, ({ login: msgLogin }) => msgLogin == usrLogin)) {
+                if(!messageRepository.check(id, ({ login: msgLogin }) => msgLogin == usrLogin)) {
                     socket.emit('error', 'unauthorized');
                     return;
                 }
