@@ -23,7 +23,7 @@ export function AuthRequired({ redirect }) {
                 login
             });
         })().catch(console.error);
-    }, [auth.isUserLoggedIn, auth, redirect]);
+    }, [auth.isUserLoggedIn, auth, redirect, navigate]);
 
     if(auth.isUserLoggedIn) {
         return (

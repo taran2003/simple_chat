@@ -1,8 +1,6 @@
-import { ChatContextProvider, useChat } from './ChatContext';
-import { getLogin } from '../../localStorage';
+import { ChatContextProvider } from './ChatContext';
 import { MessageList } from './MessageList';
 import { MessageInput } from './MessageInput';
-import { useMemo } from 'react';
 
 export function ChatPage() {
     return (

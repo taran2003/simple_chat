@@ -15,7 +15,7 @@ export function initSocket(setMessages) {
     });
     sock.on('remove', id => {
         setMessages(msgs => {
-            const i = msgs.findIndex(m => m.id == id);
+            const i = msgs.findIndex(m => m.id === id);
             const newMsgs = msgs.slice();
             newMsgs.splice(i, 1);
             return newMsgs;
@@ -23,7 +23,7 @@ export function initSocket(setMessages) {
     });
     sock.on('modify', ({ id, text }) => {
         setMessages(msgs => {
-            const i = msgs.findIndex(m => m.id == id);
+            const i = msgs.findIndex(m => m.id === id);
             const newMsgs = msgs.slice();
             newMsgs[i].text = text;
             return newMsgs;

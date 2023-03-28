@@ -23,7 +23,7 @@ export function MessageList() {
                 edited: false,
             });
         };
-        elems.push(<Message key={`msg#${i}`} text={msg.text} own={msg.login == login} onSelect={handleSelect} />);
+        elems.push(<Message key={`msg#${i}`} text={msg.text} own={msg.login === login} onSelect={handleSelect} />);
     }
     return (
         <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>

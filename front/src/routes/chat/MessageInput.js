@@ -21,7 +21,7 @@ export function MessageInput() {
         );
     }
 
-    const selectedIndex = messages.findIndex(m => m.id == selection.id);
+    const selectedIndex = messages.findIndex(m => m.id === selection.id);
     if (selection.edited) {
         const text = messages[selectedIndex].text;
         const handleChange = e => setMessages(msgs => {

@@ -1,4 +1,4 @@
-import { getTokens, setLogin, setTokens } from './localStorage';
+import { getTokens } from './localStorage';
 
 export const SERVER_URL = 'http://localhost:3001';
 
@@ -7,7 +7,7 @@ function req(method, url, data) {
         const xhr = new XMLHttpRequest();
         xhr.addEventListener('load', function () {
             if (this.status >= 200 && this.status < 300) {
-                if(this.responseText != '') {
+                if(this.responseText !== '') {
                     resolve(JSON.parse(this.responseText));
                 }
                 else {
