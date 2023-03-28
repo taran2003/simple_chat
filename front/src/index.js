@@ -1,5 +1,5 @@
 import ReactDOM from 'react-dom/client';
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import {LoginPage} from './routes/login/page';
 import { RegistrationPage } from './routes/registration/page';
 import React from 'react';
@@ -22,6 +22,7 @@ root.render(
                     <Route element={<AuthRequired redirect='/login'/>}>
                         <Route path="/chat" element={<ChatPage />} />
                     </Route>
+                    <Route path='/' element={<Navigate to="/login"/>}/>
                 </Routes>
             </BrowserRouter>
         </AuthProvider>
